@@ -102,7 +102,7 @@ class GitUploaderApp(QMainWindow):
         folder_layout.addWidget(folder_button)
         main_layout.addWidget(folder_group)
 
-        # 2. إعدادات Git (الاسم والبريد) --- الإضافة الجديدة
+        # 2. إعدادات Git (الاسم والبريد)
         config_group = QGroupBox("2. هوية المستخدم (Global Git Config)")
         config_layout = QVBoxLayout(config_group)
         
@@ -174,6 +174,7 @@ class GitUploaderApp(QMainWindow):
         except subprocess.CalledProcessError as e:
             error_details = f"{error_message}\n\nخطأ Git الأصلي:\n{e.stderr.strip()}"
             
+            # عرض الخطأ بتنسيق مقروء (لحل مشكلة الخلفية البيضاء)
             error_box = QMessageBox()
             error_box.setIcon(QMessageBox.Critical)
             error_box.setWindowTitle("خطأ Git")
@@ -202,7 +203,8 @@ class GitUploaderApp(QMainWindow):
 
         self.status_label.setText("الحالة: بدء عملية الرفع...")
         
-        # --- 0. إعداد الهوية (Git Config Global) --- الإضافة الجديدة
+        # --- 0. إعداد الهوية (Git Config Global) --- 
+        # يتم تمرير cwd=os.path.expanduser('~') لضمان تنفيذ الأمر بشكل عام (Global)
         self.status_label.setText("الحالة: تعيين هوية المستخدم العالمية (Name & Email)...")
         if self.run_git_command(["git", "config", "--global", "user.name", self.git_name], "فشل تعيين اسم المستخدم", cwd=os.path.expanduser('~')) is None: return
         if self.run_git_command(["git", "config", "--global", "user.email", self.git_email], "فشل تعيين البريد الإلكتروني", cwd=os.path.expanduser('~')) is None: return

@@ -21,7 +21,7 @@ class GitUploaderApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("🚀 Git Uploader - Easy Push Tool")
-        self.setMinimumSize(QSize(600, 550)) 
+        self.setMinimumSize(QSize(400, 400)) 
         
         self.project_path = ""
         self.repo_url = ""

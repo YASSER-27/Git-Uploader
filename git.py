@@ -21,7 +21,6 @@ class GitUploaderApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("🚀 Git Uploader - Easy Push Tool")
-        # تم زيادة الارتفاع قليلاً لاستيعاب الحقول الجديدة
         self.setMinimumSize(QSize(600, 550)) 
         
         self.project_path = ""
@@ -204,7 +203,6 @@ class GitUploaderApp(QMainWindow):
         self.status_label.setText("الحالة: بدء عملية الرفع...")
         
         # --- 0. إعداد الهوية (Git Config Global) --- 
-        # يتم تمرير cwd=os.path.expanduser('~') لضمان تنفيذ الأمر بشكل عام (Global)
         self.status_label.setText("الحالة: تعيين هوية المستخدم العالمية (Name & Email)...")
         if self.run_git_command(["git", "config", "--global", "user.name", self.git_name], "فشل تعيين اسم المستخدم", cwd=os.path.expanduser('~')) is None: return
         if self.run_git_command(["git", "config", "--global", "user.email", self.git_email], "فشل تعيين البريد الإلكتروني", cwd=os.path.expanduser('~')) is None: return
@@ -232,8 +230,7 @@ class GitUploaderApp(QMainWindow):
         
         if commit_result is None or ("nothing to commit" in commit_result):
             if commit_result is None: return
-            QMessageBox.information(self, "لا توجد تغييرات", "لا توجد ملفات جديدة للحفظ. سيتم محاولة الرفع مباشرة.")
-
+            # لا توجد تغييرات للحفظ، نواصل العملية
         
         # --- 4. تعيين الفرع (git branch -M main) ---
         self.status_label.setText("الحالة: تعيين الفرع الرئيسي...")
@@ -249,8 +246,13 @@ class GitUploaderApp(QMainWindow):
                 if self.run_git_command(["git", "remote", "add", "origin", auth_url], "فشل ربط الريموت") is None: return
         except Exception:
              if self.run_git_command(["git", "remote", "add", "origin", auth_url], "فشل ربط الريموت") is None: return
+
+        # --- 6. مزامنة التغييرات من GitHub (git pull --rebase) --- **الإضافة الجديدة**
+        self.status_label.setText("الحالة: مزامنة التغييرات من GitHub (سحب/Pull)...")
+        # هذا الأمر يسحب ملف README.md من الريموت ويدمجه محليًا
+        if self.run_git_command(["git", "pull", "--rebase", "origin", "main"], "فشل مزامنة التغييرات (Pull). تحقق من الاتصال.") is None: return
         
-        # --- 6. الرفع (git push) ---
+        # --- 7. الرفع (git push) ---
         self.status_label.setText("الحالة: رفع الملفات إلى GitHub...")
         push_result = self.run_git_command(["git", "push", "-u", "origin", "main"], "فشل الرفع. تحقق من صلاحية رمز PAT.")
 

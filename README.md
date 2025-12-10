@@ -4,4 +4,11 @@ exemple
 
 ---
 
-[Capture](Capture.PNG)
+![صورة التطبيق](Capture.PNG) 
+
+[requirements](requirements.txt)
+
+<br>
+
+![صورة التطبيق](Capture.PNG) 
+

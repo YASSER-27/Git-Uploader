@@ -1,14 +1,11 @@
 # Git-Uploader
 esay Git Uploader and fast
+[requirements](requirements.txt)
+
 exemple 
 
 ---
 
 ![صورة التطبيق](Capture.PNG) 
 
-[requirements](requirements.txt)
-
-<br>
-
-![صورة التطبيق](Capture.PNG) 
 
